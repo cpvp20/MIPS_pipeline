@@ -1,0 +1,11 @@
+.data
+
+.text
+addi $s1, $s1, 0x1001		# Initializes direction address
+sll $s1, $s1, 16          	
+
+addi $t7, $zero, 3 		# Sets t7 to 3
+sw $t7, 0($s1)			# Store t7 in the address stored in s1 with no offset
+
+lw $t6, 0($s1)			#Load previously stored value (3) into t6
+addi $t5, $t6, 2		#To check it works, t5 must be 5

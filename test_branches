@@ -1,0 +1,18 @@
+.data
+
+.text
+
+addi $t7, $zero, 1 #set t7 to 1
+addi $t6, $zero, 1 #set t6 to 1
+
+beq $t7, $t6, equal # n==1 ? base case : recursive case 
+
+addi $t7, $zero, 100 #this instruction must not be executed
+
+equal: 
+	addi $t7, $t7, 2 #t7 must now be 3
+	bne $t7, $t6, not_equal
+	addi $t7, $zero, 100 #this instruction must not be executed
+
+not_equal:
+	addi $t6, $t6, 2 #t6 must now be 3
