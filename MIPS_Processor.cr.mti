@@ -1,4 +1,18 @@
-C:/MIPS/sources/MUXRegisterFile.v {1 {vlog -work work -stats=none C:/MIPS/sources/MUXRegisterFile.v
+C:/MIPS/sources/Register_ID_EX.v {1 {vlog -work work -stats=none C:/MIPS/sources/Register_ID_EX.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module Register_ID_EX
+
+Top level modules:
+	Register_ID_EX
+
+} {} {}} C:/MIPS/sources/Register_IF_ID.v {1 {vlog -work work -stats=none C:/MIPS/sources/Register_IF_ID.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module Register_IF_ID
+
+Top level modules:
+	Register_IF_ID
+
+} {} {}} C:/MIPS/sources/MUXRegisterFile.v {1 {vlog -work work -stats=none C:/MIPS/sources/MUXRegisterFile.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module MUXRegisterFile
 
@@ -64,6 +78,13 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	Register
 
+} {} {}} C:/MIPS/sources/Register_MEM_WB.v {1 {vlog -work work -stats=none C:/MIPS/sources/Register_MEM_WB.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module Register_MEM_WB
+
+Top level modules:
+	Register_MEM_WB
+
 } {} {}} C:/MIPS/BasicMIPSProcessor_Verano2019/MUXRegisterFile.v {1 {vlog -work work -stats=none C:/MIPS/BasicMIPSProcessor_Verano2019/MUXRegisterFile.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module MUXRegisterFile
@@ -84,6 +105,20 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 
 Top level modules:
 	MIPS_Processor_TB
+
+} {} {}} C:/MIPS/sources/Register.v {1 {vlog -work work -stats=none C:/MIPS/sources/Register.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module Register
+
+Top level modules:
+	Register
+
+} {} {}} C:/MIPS/sources/RegisterFile.v {1 {vlog -work work -stats=none C:/MIPS/sources/RegisterFile.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module RegisterFile
+
+Top level modules:
+	RegisterFile
 
 } {} {}} C:/MIPS/BasicMIPSProcessor_Verano2019/Multiplexer2to1.v {1 {vlog -work work -stats=none C:/MIPS/BasicMIPSProcessor_Verano2019/Multiplexer2to1.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
@@ -127,6 +162,20 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	Adder32bits
 
+} {} {}} C:/MIPS/sources/PC_Register.v {1 {vlog -work work -stats=none C:/MIPS/sources/PC_Register.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module PC_Register
+
+Top level modules:
+	PC_Register
+
+} {} {}} C:/MIPS/sources/Register_EX_MEM.v {1 {vlog -work work -stats=none C:/MIPS/sources/Register_EX_MEM.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module Register_EX_MEM
+
+Top level modules:
+	Register_EX_MEM
+
 } {} {}} C:/MIPS/BasicMIPSProcessor_Verano2019/ShiftLeft2.v {1 {vlog -work work -stats=none C:/MIPS/BasicMIPSProcessor_Verano2019/ShiftLeft2.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module ShiftLeft2
@@ -147,6 +196,13 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 
 Top level modules:
 	DataMemory
+
+} {} {}} C:/MIPS/sources/MIPS_Processor.v {1 {vlog -work work -stats=none C:/MIPS/sources/MIPS_Processor.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module MIPS_Processor
+
+Top level modules:
+	MIPS_Processor
 
 } {} {}} C:/MIPS/sources/SignExtend.v {1 {vlog -work work -stats=none C:/MIPS/sources/SignExtend.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016

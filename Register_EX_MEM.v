@@ -7,7 +7,7 @@ module Register_EX_MEM
 	input  [4:0] WriteRegister_input,
 	input  [31:0] PC_input,
 	input  [31:0] ALUResult_input,
-	input zero_input,
+	input Zero_input,
 	//control signals	
    input Jr_input,
    input Jal_input,
@@ -24,7 +24,7 @@ module Register_EX_MEM
 	output reg  [31:0] ReadData2_output,
 	output reg  [4:0] WriteRegister_output,
 	output reg  [31:0] ALUResult_output,
-	output reg zero_output,
+	output reg Zero_output,
 	//control signals	
    output reg Jr_output,
    output reg Jal_output,
@@ -44,7 +44,7 @@ always@(negedge reset or posedge clk) begin
 			ReadData2_output <= 0;
 			WriteRegister_output <= 0;
 			ALUResult_output <= 0;
-			zero_output <= 0;
+			Zero_output <= 0;
 			Jr_output <= 0;
 			Jal_output <= 0;
 			Jump_output <= 0;
@@ -58,9 +58,10 @@ always@(negedge reset or posedge clk) begin
 	else 
 		begin
 			PC_output  <= PC_input;
+			ReadData2_output <= ReadData2_input;
 			WriteRegister_output <= WriteRegister_input;
 			ALUResult_output <= ALUResult_input;
-			zero_output <= zero_input;
+			Zero_output <= Zero_input;
 			Jr_output <= Jr_input;
 			Jal_output <= Jal_input;
 			Jump_output <= Jump_input;

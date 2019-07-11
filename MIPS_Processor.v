@@ -70,8 +70,8 @@ wire MemToReg_signal_EX;
 wire ALUSrc_signal_EX;
 wire RegWrite_signal_EX;
 wire MemRead_signal_EX;
-wire [3:0] ALUOp_signal_EX;
-wire [5:0] funct_signal_EX;
+wire [3:0] ALUOp_wire_EX;
+wire [5:0] funct_wire_EX;
 
 wire [31:0] PC4_wire_EX;
 wire [31:0] ReadData1_wire_EX;
@@ -82,14 +82,15 @@ wire [31:0] ImmediateExtend_wire_EX;
 wire [4:0]  rs_wire_EX;
 wire [4:0]  rt_wire_EX;
 wire [4:0]  rd_wire_EX;
-wire [4:0]  shamt_wire_EX;
+wire [4:0]  Shamt_wire_EX;
 
 
 //**********************	EX_MEM
 	
 wire [31:0] PC4_wire_MEM;
 wire [31:0] ReadData2_wire_MEM;
-wire zero_wire_MEM;
+wire [4:0] WriteRegister_wire_MEM;
+wire Zero_wire_MEM;
 wire [31:0] ALUResult_wire_MEM;
 wire Jr_signal_MEM;
 wire Jal_signal_MEM;
@@ -118,7 +119,6 @@ wire RegWrite_signal_WB;
 //**********************		    ALU	WIRES	********************************************/
 wire Zero_wire;	//is sub result = 0
 wire [3:0] ALUOperation_wire;
-wire [4:0]  Shamt_wire;
 wire [31:0] ALUResult_wire;
 
 //**********************		    MISC WIRES		********************************************/
@@ -249,7 +249,7 @@ MUX_ForPCAndJump
 (
 	.Selector(Jump_signal),
 	.MUX_Data0(PCOrBranch_wire),
-	.MUX_Data1({PC4_wire[31:28], Instruction_wire[27:0]<<2}), //the upper 4 bits of currPC+4 (31:28) , immediate field of the j instr, 00
+	.MUX_Data1({PC4_wire_ID[31:28], Instruction_wire_ID[27:0]<<2}), //the upper 4 bits of currPC+4 (31:28) , immediate field of the j instr, 00
 	
 	.MUX_Output(PCOrJump_wire)
 );
@@ -313,12 +313,11 @@ Multiplexer2to1
 )
 MUX_ForRTypeAndIType
 (
-	.Selector(RegDst_signal),
-	.MUX_Data0(Instruction_wire[20:16]),
-	.MUX_Data1(Instruction_wire[15:11]),
+	.Selector(RegDst_signal_EX),
+	.MUX_Data0(rt_wire_EX),
+	.MUX_Data1(rd_wire_EX),  
 	
 	.MUX_Output(WriteRegister_wire)
-
 );
 
 
@@ -337,7 +336,7 @@ Multiplexer2to1
 )
 MUX_ForReadDataAndInmediate
 (
-	.Selector(ALUSrc_signal),
+	.Selector(ALUSrc_signal_EX), //luisa antes era ALUSrc_signal
 	.MUX_Data0(ReadData2_wire_EX),
 	.MUX_Data1(ImmediateExtend_wire_EX),
 	
@@ -353,7 +352,7 @@ ALUControl
 ArithmeticLogicUnitControl
 (
 	.ALUOp(ALUOp_wire_EX),
-	.ALUFunction(ImmediateExtend_wire_EX[5:0]),
+	.ALUFunction(funct_wire_EX), 	//LUISA NATE eRA ImmediateExtend_wire_EX[5:0]
 	.ALUOperation(ALUOperation_wire)
 );
 
@@ -361,7 +360,7 @@ ArithmeticLogicUnitControl
 ALU
 Arithmetic_Logic_Unit 
 (
-	.ALUOperation(ALUOperation_wire_EX),
+	.ALUOperation(ALUOperation_wire),	//luisa antes era ALUOperation_wire_EX
 	.A(ReadData1_wire_EX),
 	.B(ReadData2OrImmediate_wire),
 	.Shamt(Shamt_wire_EX),
@@ -408,7 +407,7 @@ Multiplexer2to1
 MUX_WriteRegister	//write in reg 31 or in other reg
 (
   .Selector(Jal_signal_WB), 
-  .MUX_Data0(WriteRegister_wire),
+  .MUX_Data0(WriteRegister_wire_WB), 
   .MUX_Data1(31),	//the register $ra(register 31)
 
   .MUX_Output(MUX_WriteRegister_output_wire)
@@ -416,7 +415,7 @@ MUX_WriteRegister	//write in reg 31 or in other reg
 
 
 Register_IF_ID
-Register_IF_ID
+Reg_IF_ID
 (
 	.clk(clk),
 	.reset(reset),
@@ -424,18 +423,18 @@ Register_IF_ID
 	.Instruction_input(Instruction_wire),
 	
 	.PC4_output(PC4_wire_ID),
-	.Instruction_output(Instruction_wire_ID),
+	.Instruction_output(Instruction_wire_ID)
 );
 
 
 RegisterFile
-Register_File
+Reg_File
 (
 	.PC(0),
 	.clk(clk),
 	.reset(reset),
 	.RegWrite(RegWrite_signal_WB),
-	.WriteRegister(MUX_WriteRegister_output_wire),
+	.WriteRegister(MUX_WriteRegister_output_wire), 
 	.ReadRegister1(Instruction_wire_ID[25:21]),
 	.ReadRegister2(Instruction_wire_ID[20:16]),
 	.WriteData(WriteDataOrReturnAddr_wire),	//before just DataOutOrALUResult_wire
@@ -447,7 +446,7 @@ Register_File
 
 
 Register_ID_EX
-Register_ID_EX
+Reg_ID_EX
 (
 	//classic
 	.clk(clk),
@@ -491,19 +490,19 @@ Register_ID_EX
 	.MemWrite_output(MemWrite_signal_EX),
 	.ALUSrc_output(ALUSrc_signal_EX),
 	.RegWrite_output(RegWrite_signal_EX),
-	.ALUOp_output(ALUOp_signal_EX),
-	.funct_output(funct_signal_EX), 
+	.ALUOp_output(ALUOp_wire_EX),
+	.funct_output(funct_wire_EX), 
 	//instruction
 	.ImmediateExtend_output(ImmediateExtend_wire_EX),
 	.rs_output(rs_wire_EX),
 	.rt_output(rt_wire_EX),
 	.rd_output(rd_wire_EX),
-	.shamt_output(shamt_wire_EX)
+	.shamt_output(Shamt_wire_EX)
 
 );
 
 Register_EX_MEM
-Register_EX_MEM
+Reg_EX_MEM
 (
 	//classic
 	.clk(clk),
@@ -513,7 +512,7 @@ Register_EX_MEM
 	.ALUResult_input(ALUResult_wire),
 	.WriteRegister_input(WriteRegister_wire),
 	.PC_input(PC4_wire_EX),
-	.zero_input(Zero_wire),
+	.Zero_input(Zero_wire),
 
 	//control signals	
    .Jr_input(Jr_signal_EX),
@@ -526,10 +525,10 @@ Register_EX_MEM
 	.MemWrite_input(MemWrite_signal_EX),
 	.RegWrite_input(RegWrite_signal_EX),
 		
-	
+	.WriteRegister_output(WriteRegister_wire_MEM),
 	.PC_output(PC4_wire_MEM),
 	.ReadData2_output(ReadData2_wire_MEM),
-	.zero_output(zero_wire_MEM),
+	.Zero_output(Zero_wire_MEM),
 	.ALUResult_output(ALUResult_wire_MEM),
 	//control signals	
 	.Jr_output(Jr_signal_MEM),
@@ -540,12 +539,12 @@ Register_EX_MEM
 	.MemRead_output(MemRead_signal_MEM),
 	.MemToReg_output(MemToReg_signal_MEM),
 	.MemWrite_output(MemWrite_signal_MEM),
-	.RegWrite_output(RegWrite_signal_MEM),
+	.RegWrite_output(RegWrite_signal_MEM)
 );
 
 
 Register_MEM_WB
-Register_MEM_WB
+Reg_MEM_WB
 (
 	.clk(clk),
 	.reset(reset),
@@ -568,7 +567,7 @@ Register_MEM_WB
    .Jal_output(Jal_signal_WB),
    .Jump_output(Jump_signal_WB),
 	.MemToReg_output(MemToReg_signal_WB),
-	.RegWrite_output(RegWrite_signal_WB),
+	.RegWrite_output(RegWrite_signal_WB)
 );
 
 
