@@ -138,6 +138,9 @@ wire [31:0] ImmediateExtend_wire;
 wire [31:0] ReadData2OrImmediate_wire;
 wire [31:0] WriteDataOrReturnAddr_wire;
 
+wire ForwardA_wire; //sel mux
+wire ForwardB_wire; //sel mux
+
 
 integer ALUStatus;
 
@@ -330,6 +333,36 @@ SignExtendForConstants
 );
 
 
+
+Multiplexer3to1
+#(
+  .NBits(32)
+)
+MUX_ForwardA
+(
+  .Selector(ForwardA_wire),
+  .MUX_Data0(ReadData1_wire_EX),
+  .MUX_Data1(WriteDataOrReturnAddr_wire),
+  .MUX_Data2(ALUResult_wire_WB),	//MEM?????????????????????????
+  .MUX_Output(ReadData1OrForwardA)  // A ENTRY ALU
+);
+
+
+
+Multiplexer3to1
+#(
+  .NBits(32)
+)
+MUX_ForwardB
+(
+  .Selector(ForwardB_wire),
+  .MUX_Data0(ReadData2_wire_EX),
+  .MUX_Data1(WriteDataOrReturnAddr_wire),		//write this data in the register
+  .MUX_Data2(ALUResult_wire_WB),	//MEM?????????????????????????
+  .MUX_Output(ReadData2OrForwardB)
+);
+
+
 Multiplexer2to1
 #(
 	.NBits(32)
@@ -337,11 +370,10 @@ Multiplexer2to1
 MUX_ForReadDataAndInmediate
 (
 	.Selector(ALUSrc_signal_EX), //luisa antes era ALUSrc_signal
-	.MUX_Data0(ReadData2_wire_EX),
+	.MUX_Data0(ReadData2OrForwardB),
 	.MUX_Data1(ImmediateExtend_wire_EX),
 	
-	.MUX_Output(ReadData2OrImmediate_wire)
-
+	.MUX_Output(ReadData2OrImmediate_wire)///////////////B ENTRY ALU
 );
 
 
@@ -499,6 +531,20 @@ Reg_ID_EX
 	.rd_output(rd_wire_EX),
 	.shamt_output(Shamt_wire_EX)
 
+);
+
+Forwarding_Unit 
+FWD_unit
+(
+  .RegWrite_MEM(RegWrite_signal_MEM),
+  .RegWrite_WB(RegWrite_signal_WB),
+  .rs_EX(rs_wire_EX),
+  .rt_EX(rt_wire_EX),
+  .rd_MEM(WriteRegister_wire_MEM),
+  .rd_WB(MUX_WriteRegister_output_wire),
+  
+  .ForwardA(ForwardA_wire),
+  .ForwardB(ForwardB_wire)
 );
 
 Register_EX_MEM
