@@ -4,7 +4,8 @@
 # Hanoi Towers
 .data
 .text
-lui $sp, 0x1001
+addi $s0, $zero, 3		#user assigns n -> number of disks  
+lui $sp, 0x1001		#MARS memory alignment
 ori $sp, $sp, 0x03dc
 
 addi $s1, $s1, 0x1001		# start out w part of address to later shift it to move to the high part
@@ -13,20 +14,20 @@ addi $s2, $s1, 0x20    	# initializa s2 to point to Tower B in 0x10010020
 addi $s3, $s1, 0x40     	# initializa s3 to point to Tower C in 0x10010040
 
 main:
-	addi $s0, $zero, 3		#assign n number of disks  
 	add $t7, $zero,  $s0	#int i = n (number of disks)
-
 	while: # Fill tower A with all the disks starting from Dn to D1	
 		sw $t7, 0($s1)	#add disk
-		addi $t7, $t7, -1 # n--
 		addi $s1, $s1, 4	#update top
+		addi $t7, $t7, -1 # n--
+		add $zero, $zero, $zero	#nop
 		add $zero, $zero, $zero	#nop
 		add $zero, $zero, $zero  #nop
 	bne $t7, $zero, while #while n>0
+	
 	add $a0, $zero, $s0 #pass global vars to params for hanoi call
 	add $a1, $zero, $s1
 	add $a2, $zero, $s3
-	add $a3, $zero, $s2		
+	add $a3, $zero, $s2			
 	jal hanoi_function #initial call : hanoi(n,scr,dest,aux)
 	j exit	
 

@@ -23,15 +23,14 @@ module Hazard_Detection_Unit
 				Stall <= 1;
 				PCWrite <= 0;
 				IF_ID_RegWrite <= 0;
-				Flush <= Branch || Jump;	//omg control hazard!!
 			end
 			else
 			begin
 				Stall <= 0;
 				PCWrite <= 1;
 				IF_ID_RegWrite <= 1;
-				Flush <= Branch || Jump;	//omg control hazard
 			end
+			Flush <= (Branch | Jump);	//omg control hazard
 			
 		end//always
 	
