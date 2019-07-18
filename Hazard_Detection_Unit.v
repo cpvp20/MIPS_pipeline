@@ -5,7 +5,7 @@ module Hazard_Detection_Unit
 (
 	input Branch,
 	input Jump,
-	input MemRead_signal_EX;
+	input MemRead_signal_EX,
 	input [4:0] rt_EX,
 	input [4:0] rs_ID,
 	input [4:0] rt_ID,
@@ -18,24 +18,21 @@ module Hazard_Detection_Unit
 
 	always@(*) 
 		begin
-			if (MemRead_signal_EX and rt_EX == rs_ID) or (rt_EX == rt_ID)))
+			if (MemRead_signal_EX && ((rt_EX == rs_ID) || (rt_EX == rt_ID)))
 			begin
 				Stall <= 1;
 				PCWrite <= 0;
 				IF_ID_RegWrite <= 0;
-				Flush < = Branch or Jump;	//omg control hazard!!
+				Flush <= Branch || Jump;	//omg control hazard!!
 			end
 			else
 			begin
 				Stall <= 0;
 				PCWrite <= 1;
 				IF_ID_RegWrite <= 1;
-				Flush < = Branch or Jump;	//omg control hazard!!
+				Flush <= Branch || Jump;	//omg control hazard
 			end
 			
-		end
+		end//always
 	
 endmodule
-
-
-

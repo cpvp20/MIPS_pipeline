@@ -19,8 +19,8 @@ module PC_Register
 (
 	input clk,
 	input reset,
-	input  [N-1:0] NewPC,
-	
+	input [N-1:0] NewPC,
+	input enable,	//PCWrite comes from hazard detection
 	
 	output reg [N-1:0] PCValue
 );
@@ -28,7 +28,7 @@ module PC_Register
 always@(negedge reset or negedge clk) begin
 	if(reset==0)
 		PCValue <= 'h00400000;
-	else	
+	else if(enable)
 		PCValue<=NewPC;
 end
 

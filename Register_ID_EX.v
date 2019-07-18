@@ -7,9 +7,7 @@ module Register_ID_EX
 	input  [31:0] ReadData1_input,
 	input  [31:0] ReadData2_input,
 	//control signals	
-   input Jr_input,
    input Jal_input,
-   input Jump_input,
 	input RegDst_input,	
 	input BranchEQ_input,
 	input BranchNE_input,
@@ -32,9 +30,7 @@ module Register_ID_EX
 	output reg [31:0] ReadData1_output,
 	output reg [31:0] ReadData2_output,
 	//control signals	
-   output reg Jr_output,
    output reg Jal_output,
-   output reg Jump_output,
 	output reg RegDst_output,	
 	output reg BranchEQ_output,
 	output reg BranchNE_output,
@@ -60,9 +56,7 @@ always@(negedge reset or posedge clk) begin
 			PC4_output  <= 0;
 			ReadData1_output <= 0;
 			ReadData2_output <= 0;
-			Jr_output <= 0;
 			Jal_output <= 0;
-			Jump_output <= 0;
 			RegDst_output <= 0;	
 			BranchEQ_output <= 0;
 			BranchNE_output <= 0;
@@ -84,9 +78,7 @@ always@(negedge reset or posedge clk) begin
 			PC4_output  <= PC4_input;
 			ReadData1_output <= ReadData1_input;
 			ReadData2_output <= ReadData2_input;
-			Jr_output <= Jr_input;
 			Jal_output <= Jal_input;
-			Jump_output <= Jump_input;
 			RegDst_output <= RegDst_input;	
 			BranchEQ_output <= BranchEQ_input;
 			BranchNE_output <= BranchNE_input;

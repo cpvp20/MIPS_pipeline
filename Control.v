@@ -3,18 +3,12 @@
 *	This is control unit for the MIPS processor. The control unit is 
 *	in charge of generation of the control signals. Its only input 
 *	corresponds to opcode from the instruction.
-*	1.0
-* Author:
-*	Dr. José Luis Pizano Escalante
-* email:
-*	luispizano@iteso.mx
-* Date:
-*	01/03/2014
 ******************************************************************/
 module Control
 (
 	input [5:0] OP,
 	input [5:0] funct, 
+	input stall,
 	
    output Jr,
    output Jal,
@@ -29,6 +23,7 @@ module Control
 	output RegWrite,
 	output [3:0]ALUOp
 );
+
 
 localparam R_Type      = 0;
 localparam I_Type_ADDI = 6'h8;
@@ -65,8 +60,8 @@ always@(OP or funct) begin
 		default:
 			ControlValues= 15'b0;
 		endcase
+		if(stall) ControlValues= 15'b0;
 end	
-
 
   assign Jr       = ControlValues[14];  
   assign Jal      = ControlValues[13];  
@@ -80,6 +75,7 @@ end
   assign BranchNE = ControlValues[5];   
   assign BranchEQ = ControlValues[4];  
   assign ALUOp    = ControlValues[3:0];
+ 
 
 endmodule
 //control//
